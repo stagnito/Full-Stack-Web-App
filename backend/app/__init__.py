@@ -51,10 +51,15 @@ def create_app():
         SWAGGER_URL,
         API_URL,
         config={
-            'app_name': "School Equipment Lending API"
+            'app_name': "School Equipment Lending API",
+            'validatorUrl': None  # Disable validator
         }
     )
     app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
+
+    @app.route("/static/swagger.json")
+    def specs():
+        return app.send_static_file("swagger.json")
 
     # Register blueprints
     from .routes import auth, equipment, borrowing
